@@ -89,15 +89,38 @@ class UserRegisterController extends Controller
 
     public function userAge(){
 
-        $userAge = DB::table('user_registers')->select(DB::raw('count(*) as user_count, age'))->groupBy('age')->get();
 
-        return $userAge;
+        $age = UserRegister::all('age');
+
+        foreach($age as $userAge){
+            if($userAge <= '30'){
+                $count = $count + 1;
+                return "Young Age".$count;
+            }else{
+                // $counts = $counts + 1;
+                return "Middle Age";
+            }
+        }
+
+        
+
+        // $userAge = DB::table('user_registers')->select(DB::raw('count(*) as user_count, age'))->groupBy('age')->get();
+
+        // if('age' >= '25'){
+        //     return "Youth";
+        // }else if($user_reg <=25 && $user_reg >= 50){
+        //     return "Middle Age";
+        // }else{
+        //     return "Old Age";
+        // }
     }
 
     public function userBirthMonth(){
 
-        $userMonth = DB::table('user_registers')->select(DB::raw('count(*) as user_count, date_of_birth'))->groupBy('age')->get();
+        
 
+        $userMonth = DB::table('user_registers')->select(DB::raw('count(monthname(date_of_birth)) as user_count, monthname(date_of_birth)'))->groupBy('months')->get();
+        // SELECT COUNT(monthname(date_of_birth)) AS countbyMonth, monthname(date_of_birth) AS months FROM user_registers GROUP BY months;
         return $userMonth;
     }
 }
